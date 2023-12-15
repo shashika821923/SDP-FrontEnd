@@ -1,0 +1,15 @@
+/* LoginComponent.css */
+
+.login-container {
+    background-image: url('https://wallpapercave.com/dwp2x/wp7259698.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  /* You can add more styles based on your design preferences */
+  
