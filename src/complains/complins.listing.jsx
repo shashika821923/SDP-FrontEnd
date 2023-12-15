@@ -4,14 +4,16 @@ import {
   Table, Space, message, Form, Select, Button, Modal,
 } from 'antd';
 import { getDatabase, ref, onValue } from 'firebase/database';
-import AddComplaint, { ProblemTypes } from './complains.add';
+import AddComplaint from './complains.add';
 import apiCalls from '../loginPages/pages/serviceCalls/api.calls';
 import AddHistoryForComplain from '../History/add.history.form';
 import ComplainHistoryListing from '../History/complains.listing';
+import { departments } from '../enums';
 
 const { Option } = Select;
 
 function ComplaintTable() {
+  const [forms] = Form.useForm();
   const [complaints, setComplaints] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [selectedComplaint, setSelectedComplaint] = useState(null);
@@ -19,8 +21,16 @@ function ComplaintTable() {
   const [filters, setFilters] = useState({ problemType: 0 });
   const [isModelOpen, setIsModelOpen] = useState(false);
   const [usersInfo, setUsersInfo] = useState([]);
+  // const [userInfoAsKeyValues, setUserInfoAsKeyValues] = useState([]);
   const [isAddHistoryPopupOpen, setIsAddHistoryPopupOpen] = useState(false);
   const [isHistoryLisingOpen, setIsHistoryListingOpen] = useState(false);
+  const [isAssigneEmpPopupOpen, setIsAssignEmpPopupOpen] = useState(false);
+  const [complianAssignees, setCompplainAssignees] = useState([]);
+
+  const departmentTypeArray = [{ key: 0, value: 'All' }, ...Object.keys(departments)
+    .map((key) => ({ key: Number(key), value: departments[key] }))];
+
+  console.log(complianAssignees);
 
   const handleEdit = (complaint) => {
     setEditMode(true);
@@ -39,6 +49,10 @@ function ComplaintTable() {
     getUserInformation();
   }, []);
 
+  // useEffect(() => {
+  //   setUserInfoAsKeyValues(usersInfo.map((user) => ({ key: user.id, value: user.fullName })));
+  // }, [usersInfo]);
+
   useEffect(() => {
     const complaintsRef = ref(getDatabase(), 'complaints');
 
@@ -48,8 +62,11 @@ function ComplaintTable() {
           const data = snapshot.val();
 
           if (data) {
-            const filteredComplaints = (filters.problemType !== 0) ? Object.keys(data)
-              .filter((key) => data[key].problemType === filters.problemType)
+            // eslint-disable-next-line eqeqeq
+            const filteredComplaints = (filters.problemType !== 0)
+            // eslint-disable-next-line eqeqeq
+             ? Object.keys(data)
+              .filter((key) => data[key].problemType == filters.problemType)
               .map((key) => ({
                 id: key,
                 ...data[key],
@@ -70,6 +87,49 @@ function ComplaintTable() {
      fetchData();
   }, [filters]);
 
+  useEffect(() => {
+    const complaintsRef = ref(getDatabase(), 'complainsAssignees');
+
+    const fetchAssigneeInfo = async () => {
+      try {
+        onValue(complaintsRef, (snapshot) => {
+          const data = snapshot.val();
+
+          if (data) {
+            // eslint-disable-next-line eqeqeq
+            const filteredComplaints = Object.keys(data).map((key) => ({
+                id: key,
+                ...data[key],
+              }));
+              setCompplainAssignees(filteredComplaints);
+          } else {
+            setCompplainAssignees([]);
+          }
+        });
+      } catch (error) {
+        message.error('Failed to fetch complaints. Please try again.');
+      }
+    };
+
+    fetchAssigneeInfo();
+  }, []);
+
+  const onFinish = async (values) => {
+    try {
+        const formData = new FormData();
+        formData.append('complainId', selectedComplaint?.id);
+        formData.append('employeeId', values.employeeId);
+
+        apiCalls.addComplainAssignee(formData).then(() => {
+                message.success('successfully');
+                form.resetFields();
+        });
+    } catch (error) {
+        console.error('Error complaint:', error);
+        message.error('Failed to complaint');
+    }
+};
+
   const columns = [
     {
       title: 'Description',
@@ -88,8 +148,14 @@ function ComplaintTable() {
     },
     {
       title: 'Problem Type',
-      dataIndex: 'problemType',
       key: 'problemType',
+      render: (text, record) => (
+        <Space size="middle">
+          {// eslint-disable-next-line eqeqeq
+          departmentTypeArray.filter((x) => x.key == record.problemType)[0].value || ''
+          }
+        </Space>
+      ),
     },
     {
       title: 'Complained By',
@@ -100,8 +166,11 @@ function ComplaintTable() {
     },
     {
       title: 'Assigned To',
-      dataIndex: 'assignedTo',
       key: 'assignedTo',
+      render: (text, record) => {
+        console.log('aaaa', complianAssignees.find((x) => x.complainId === record.id).employeeId);
+        <span aria-hidden="true">{complianAssignees.find((x) => x.complainId === record.id)?.employeeId || ''}</span>;
+    },
     },
     {
       title: 'Open image in new tab',
@@ -123,6 +192,11 @@ function ComplaintTable() {
           <Space size="middle">
             <Button onClick={() => { handleEdit(record); setIsModelOpen(true); }} type="primary" danger>
               Edit
+            </Button>
+          </Space>
+          <Space size="left" style={{ marginLeft: '10px' }}>
+            <Button onClick={() => { handleEdit(record); setIsAssignEmpPopupOpen(true); }} type="primary" danger>
+              Assign employee
             </Button>
           </Space>
           <Space size="left" style={{ marginLeft: '10px' }}>
@@ -149,9 +223,11 @@ function ComplaintTable() {
           name="problemType"
         >
           <Select>
-            <Option value={0}> All </Option>
-            <Option value={ProblemTypes.WILDLIFE}> Wildlife</Option>
-            <Option value={ProblemTypes.FORESTRY}> Forestry</Option>
+          {departmentTypeArray.map((data) => (
+            <Option value={data.key} key={data.key}>
+              {data.value}
+            </Option>
+          ))}
           </Select>
         </Form.Item>
         <Form.Item>
@@ -179,27 +255,45 @@ function ComplaintTable() {
           complainId={selectedComplaint?.id}
         />
       </Modal>
-      )}
+        )}
+      {isAssigneEmpPopupOpen
+        && (
+          <Modal footer={null} title="Add Progress for complains" open={isAssigneEmpPopupOpen} okButtonProps={{ disabled: true }} onCancel={() => { setIsAssignEmpPopupOpen(false); setEditMode(false); setSelectedComplaint(null); }}>
+            <Form form={forms} onFinish={onFinish} layout="vertical">
+                <Form.Item
+                    label="employeeId"
+                    name="employeeId"
+                    rules={[{ required: true, message: 'Please enter the employee' }]}
+                >
+              <Select>
+                {usersInfo.filter((x) => x.department == selectedComplaint.problemType)
+                .map((user) => ({ key: user.id, value: user.fullName }))
+                .map((data) => (
+                  <Option value={data.key} key={data.key}>
+                    {data.value}
+                  </Option>
+                ))}
+              </Select>
+                </Form.Item>
+                <Form.Item>
+                    <Button type="primary" htmlType="submit">
+                        Add Complaint
+                    </Button>
+                </Form.Item>
+            </Form>
+          </Modal>
+        )}
 
-{
-  isHistoryLisingOpen && (
-    <Modal
-      footer={null}
-      style={{ width: '1000px' }} // Set the width here
-      title="Add Progress for complains"
-      open={isHistoryLisingOpen}
-      okButtonProps={{ disabled: true }}
-      onCancel={() => {
-        setIsAddHistoryPopupOpen(false); setEditMode(false);
-         setSelectedComplaint(null);
-        }}
-    >
-      <ComplainHistoryListing
-        complainId={selectedComplaint?.id}
-      />
-    </Modal>
-  )
-}
+      {
+        isHistoryLisingOpen
+        && (
+          <Modal footer={null} title="Add Progress for complains" open={isHistoryLisingOpen} okButtonProps={{ disabled: true }} onCancel={() => { setIsHistoryListingOpen(false); setEditMode(false); setSelectedComplaint(null); }}>
+            <ComplainHistoryListing
+              complainId={selectedComplaint?.id}
+            />
+          </Modal>
+        )
+        }
 
     </div>
   );

@@ -5,7 +5,7 @@ import {
 } from 'antd';
 /* eslint-enable import/no-extraneous-dependencies */
 import apiCalls from './pages/serviceCalls/api.calls';
-import userTypes from '../enums';
+import { departments, userTypes } from '../enums';
 
 const { Option } = Select;
 
@@ -14,6 +14,9 @@ function CreateAccountPage() {
   /* eslint prefer-object-spread: "error" */
   const userTypesArray = Object.keys(userTypes)
   .map((key) => ({ key: Number(key), value: userTypes[key] }));
+
+  const departmentTypeArray = Object.keys(departments)
+  .map((key) => ({ key: Number(key), value: departments[key] }));
 
   const onFinish = async (values) => {
     apiCalls.createAccount(values).then((userId) => window.localStorage.setItem('loggedInUser', userId));
@@ -70,6 +73,22 @@ function CreateAccountPage() {
       >
         <Select>
           {userTypesArray.map((data) => (
+            <Option value={data.key} key={data.key}>
+              {data.value}
+            </Option>
+          ))}
+        </Select>
+
+      </Form.Item>
+      <Form.Item
+        label="department"
+        name="department"
+        rules={[
+          { required: true, message: 'Please select the department' },
+        ]}
+      >
+        <Select>
+          {departmentTypeArray.map((data) => (
             <Option value={data.key} key={data.key}>
               {data.value}
             </Option>

@@ -28,5 +28,6 @@ module.exports = {
     'linebreak-style': 'off',
     'react/require-default-props': 'off',
     'jsx-a11y/click-events-have-key-events': 'off',
+    eqeqeq: 'off',
   },
 };

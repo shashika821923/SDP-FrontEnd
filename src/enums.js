@@ -1,7 +1,10 @@
-const userTypes = {
+export const userTypes = {
     1: 'Public',
     2: 'Employee',
     3: 'Admin',
 };
 
-export default userTypes;
+export const departments = {
+    1: 'Forest Department',
+    2: 'Wild life Department',
+};

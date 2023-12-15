@@ -9,6 +9,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
 import apiCalls from '../loginPages/pages/serviceCalls/api.calls';
 import { auth } from '../configurations/firebase';
+import { departments } from '../enums';
 
 const { Dragger } = Upload;
 const { Option } = Select;
@@ -19,9 +20,10 @@ export const ProblemTypes = {
   FORESTRY: 'forestry',
   ENVIRONMENTAL_CRIME: 'environmentalCrime',
 };
-
 function AddComplaint({ editMode = false, complaintId = null }) {
     const [form] = Form.useForm();
+    const departmentTypeArray = Object.keys(departments)
+    .map((key) => ({ key: Number(key), value: departments[key] }));
 
     useEffect(() => {
       if (editMode) {
@@ -114,8 +116,11 @@ function AddComplaint({ editMode = false, complaintId = null }) {
           rules={[{ required: true, message: 'Please select the problem type' }]}
         >
           <Select>
-            <Option value={ProblemTypes.WILDLIFE}> Wildlife</Option>
-            <Option value={ProblemTypes.FORESTRY}> Forestry</Option>
+          {departmentTypeArray.map((data) => (
+            <Option value={data.key} key={data.key}>
+              {data.value}
+            </Option>
+          ))}
           </Select>
         </Form.Item>
 
