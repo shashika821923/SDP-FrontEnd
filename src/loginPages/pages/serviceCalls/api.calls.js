@@ -23,10 +23,20 @@ function editComplain(formData) {
   return axios.post(`${config.api.endpoint}/complains/updateComplain`, formData).then((data) => data.data).catch((error) => message.error(error));
 }
 
+function getUserInformation(userData) {
+  return axios.post(`${config.api.endpoint}/login/getUserInformation`, userData).then((data) => data.data).catch((error) => message.error(error));
+}
+
+function addComplainHistory(complainHistory) {
+  return axios.post(`${config.api.endpoint}/complains/addComplainHistory`, complainHistory).then((data) => data.data).catch((error) => message.error(error));
+}
+
 export default {
   checkUsernameandPassword,
   createAccount,
   createComplain,
   getComplain,
   editComplain,
+  getUserInformation,
+  addComplainHistory,
 };

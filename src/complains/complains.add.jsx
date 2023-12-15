@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import {
     Form, Input, Button, Upload, message, DatePicker, Select,
  } from 'antd';
+ import _ from 'lodash';
 import moment from 'moment/moment';
 import { InboxOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
@@ -41,7 +42,7 @@ function AddComplaint({ editMode = false, complaintId = null }) {
     const onFinish = async (values) => {
       try {
         const formData = new FormData();
-        formData.append('image', values.image[0].originFileObj);
+        formData.append('image', !_.isUndefined(values.image) ? values.image[0].originFileObj : '');
         formData.append('description', values.description);
         formData.append('location', values.location);
         formData.append('timeFrame', values.timeFrame.format());
@@ -49,11 +50,10 @@ function AddComplaint({ editMode = false, complaintId = null }) {
         formData.append('complainedBy', auth.currentUser.uid);
 
         if (editMode) {
-          // If in edit mode, include the complaint ID
           formData.append('complaintId', complaintId);
         }
 
-        (editMode ? apiCalls.createComplain(formData)
+        (!editMode ? apiCalls.createComplain(formData)
         : apiCalls.editComplain(formData)).then(() => {
           message.success(`${editMode ? 'Complaint updated' : 'Complaint added'} successfully`);
           form.resetFields();
@@ -114,12 +114,12 @@ function AddComplaint({ editMode = false, complaintId = null }) {
           rules={[{ required: true, message: 'Please select the problem type' }]}
         >
           <Select>
-            <Option value={ProblemTypes.WILDLIFE}> Against Wildlife</Option>
-            <Option value={ProblemTypes.FORESTRY}> Against Forestry</Option>
-            <Option value={ProblemTypes.ENVIRONMENTAL_CRIME}> Against Environmental Crime</Option>
+            <Option value={ProblemTypes.WILDLIFE}> Wildlife</Option>
+            <Option value={ProblemTypes.FORESTRY}> Forestry</Option>
           </Select>
         </Form.Item>
 
+        {!editMode && (
         <Form.Item
           label="Image"
           name="image"
@@ -134,6 +134,7 @@ function AddComplaint({ editMode = false, complaintId = null }) {
             <p className="ant-upload-text">Click or drag image to this area to upload</p>
           </Dragger>
         </Form.Item>
+        )}
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
@@ -150,9 +151,9 @@ export default AddComplaint;
 AddComplaint.propTypes = {
     editMode: PropTypes.bool,
     complaintId: PropTypes.number,
-  };
+};
 
-  AddComplaint.defaultProps = {
+AddComplaint.defaultProps = {
     editMode: false,
     complaintId: null,
-  };
+};

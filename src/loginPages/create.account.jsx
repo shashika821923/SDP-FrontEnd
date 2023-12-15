@@ -1,13 +1,19 @@
 import React from 'react';
 /* eslint-disable import/no-extraneous-dependencies */
 import {
-  Form, Input, Button,
+  Form, Input, Button, Select,
 } from 'antd';
 /* eslint-enable import/no-extraneous-dependencies */
 import apiCalls from './pages/serviceCalls/api.calls';
+import userTypes from '../enums';
+
+const { Option } = Select;
 
 function CreateAccountPage() {
   const [form] = Form.useForm();
+  /* eslint prefer-object-spread: "error" */
+  const userTypesArray = Object.keys(userTypes)
+  .map((key) => ({ key: Number(key), value: userTypes[key] }));
 
   const onFinish = async (values) => {
     apiCalls.createAccount(values).then((userId) => window.localStorage.setItem('loggedInUser', userId));
@@ -54,6 +60,23 @@ function CreateAccountPage() {
         ]}
       >
         <Input />
+      </Form.Item>
+      <Form.Item
+        label="userType"
+        name="userType"
+        rules={[
+          { required: true, message: 'Please enter your mobile number' },
+          { pattern: /^[0-9]{10}$/, message: 'Please select a user type' },
+        ]}
+      >
+        <Select>
+          {userTypesArray.map((data) => (
+            <Option value={data.key} key={data.key}>
+              {data.value}
+            </Option>
+          ))}
+        </Select>
+
       </Form.Item>
       <Form.Item>
         <Button type="primary" htmlType="submit">
