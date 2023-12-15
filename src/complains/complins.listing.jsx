@@ -3,6 +3,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import {
   Table, Space, message, Form, Select, Button, Modal,
 } from 'antd';
+import _ from 'lodash';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import AddComplaint from './complains.add';
 import apiCalls from '../loginPages/pages/serviceCalls/api.calls';
@@ -30,10 +31,18 @@ function ComplaintTable() {
   const departmentTypeArray = [{ key: 0, value: 'All' }, ...Object.keys(departments)
     .map((key) => ({ key: Number(key), value: departments[key] }))];
 
-  console.log(complianAssignees);
+  // console.log('shas', forms.getFieldsValue());
 
   const handleEdit = (complaint) => {
     setEditMode(true);
+    setSelectedComplaint(complaint);
+  };
+
+  const handleOnAssign = (complaint) => {
+    setEditMode(true);
+    forms.setFieldsValue({
+      employeeId: complianAssignees.find((x) => x.complainId === complaint.id).employeeId,
+    });
     setSelectedComplaint(complaint);
   };
 
@@ -48,10 +57,6 @@ function ComplaintTable() {
   useEffect(() => {
     getUserInformation();
   }, []);
-
-  // useEffect(() => {
-  //   setUserInfoAsKeyValues(usersInfo.map((user) => ({ key: user.id, value: user.fullName })));
-  // }, [usersInfo]);
 
   useEffect(() => {
     const complaintsRef = ref(getDatabase(), 'complaints');
@@ -119,8 +124,12 @@ function ComplaintTable() {
         const formData = new FormData();
         formData.append('complainId', selectedComplaint?.id);
         formData.append('employeeId', values.employeeId);
+        if (editMode) {
+          formData.append('assigneeId', complianAssignees.find((x) => x.complainId === selectedComplaint.id).id);
+        }
 
-        apiCalls.addComplainAssignee(formData).then(() => {
+        (editMode ? apiCalls.updateAssignee(formData)
+        : apiCalls.addComplainAssignee(formData)).then(() => {
                 message.success('successfully');
                 form.resetFields();
         });
@@ -168,8 +177,9 @@ function ComplaintTable() {
       title: 'Assigned To',
       key: 'assignedTo',
       render: (text, record) => {
-        console.log('aaaa', complianAssignees.find((x) => x.complainId === record.id).employeeId);
-        <span aria-hidden="true">{complianAssignees.find((x) => x.complainId === record.id)?.employeeId || ''}</span>;
+        const emp = complianAssignees.find((x) => x.complainId === record.id);
+        console.log('sss', emp);
+        return <span aria-hidden="true">{!_.isEmpty(emp) ? usersInfo.find((x) => x.id === emp.employeeId)?.fullName : ''}</span>;
     },
     },
     {
@@ -195,7 +205,7 @@ function ComplaintTable() {
             </Button>
           </Space>
           <Space size="left" style={{ marginLeft: '10px' }}>
-            <Button onClick={() => { handleEdit(record); setIsAssignEmpPopupOpen(true); }} type="primary" danger>
+            <Button onClick={() => { handleOnAssign(record); setIsAssignEmpPopupOpen(true); }} type="primary" danger>
               Assign employee
             </Button>
           </Space>
@@ -261,7 +271,7 @@ function ComplaintTable() {
           <Modal footer={null} title="Add Progress for complains" open={isAssigneEmpPopupOpen} okButtonProps={{ disabled: true }} onCancel={() => { setIsAssignEmpPopupOpen(false); setEditMode(false); setSelectedComplaint(null); }}>
             <Form form={forms} onFinish={onFinish} layout="vertical">
                 <Form.Item
-                    label="employeeId"
+                    label="Employee"
                     name="employeeId"
                     rules={[{ required: true, message: 'Please enter the employee' }]}
                 >

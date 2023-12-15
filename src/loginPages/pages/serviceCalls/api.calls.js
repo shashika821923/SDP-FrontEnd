@@ -35,6 +35,10 @@ function addComplainAssignee(complainHistory) {
   return axios.post(`${config.api.endpoint}/complains/saveComplainAssignee`, complainHistory).then((data) => data.data).catch((error) => message.error(error));
 }
 
+function updateAssignee(complainHistory) {
+  return axios.post(`${config.api.endpoint}/complains/updateAssignee`, complainHistory).then((data) => data.data).catch((error) => message.error(error));
+}
+
 export default {
   checkUsernameandPassword,
   createAccount,
@@ -44,4 +48,5 @@ export default {
   getUserInformation,
   addComplainHistory,
   addComplainAssignee,
+  updateAssignee,
 };
