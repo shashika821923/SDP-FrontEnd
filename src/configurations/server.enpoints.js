@@ -1,6 +1,6 @@
 const config = {
   api: {
-    endpoint: 'http://localhost:3000',
+    endpoint: 'http://localhost:4000',
   },
   defaults: {
     showEHF: true,

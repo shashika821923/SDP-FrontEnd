@@ -22,6 +22,11 @@ module.exports = {
     ecmaVersion: 'latest',
   },
   rules: {
-    'linebreak-style': ['error', 'unix'],
+    indent: 'off',
+    'react/jsx-indent': 'off',
+    'react/jsx-indent-props': 'off',
+    'linebreak-style': 'off',
+    'react/require-default-props': 'off',
+    'jsx-a11y/click-events-have-key-events': 'off',
   },
 };
