@@ -65,8 +65,7 @@ function CreateAccountPage() {
         label="userType"
         name="userType"
         rules={[
-          { required: true, message: 'Please enter your mobile number' },
-          { pattern: /^[0-9]{10}$/, message: 'Please select a user type' },
+          { required: true, message: 'Please select a user type' },
         ]}
       >
         <Select>
