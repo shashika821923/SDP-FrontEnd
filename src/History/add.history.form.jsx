@@ -4,15 +4,19 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import {
     Button,
-    DatePicker, Form, Input, message,
+    DatePicker, Form, Input, Select, message,
 } from 'antd';
 import Dragger from 'antd/es/upload/Dragger';
 import { InboxOutlined } from '@ant-design/icons';
 import apiCalls from '../loginPages/pages/serviceCalls/api.calls';
 import { auth } from '../configurations/firebase';
+import { statuses } from '../enums';
 
+const { Option } = Select;
 function AddHistoryForComplain({ complainId }) {
     const [form] = Form.useForm();
+    const complainsStatuses = [...Object.keys(statuses)
+    .map((key) => ({ key: Number(key), value: statuses[key] }))];
     const onFinish = async (values) => {
         try {
             const formData = new FormData();
@@ -21,6 +25,7 @@ function AddHistoryForComplain({ complainId }) {
             formData.append('description', values.description);
             formData.append('updatedBy', auth.currentUser.uid);
             formData.append('timeFrame', values.timeFrame.format());
+            formData.append('status', values.status);
 
             apiCalls.addComplainHistory(formData).then(() => {
                     message.success('successfully');
@@ -75,6 +80,19 @@ function AddHistoryForComplain({ complainId }) {
                         </p>
                         <p className="ant-upload-text">Click or drag image to this area to upload</p>
                     </Dragger>
+                </Form.Item>
+                <Form.Item
+                    label="Select current status"
+                    name="status"
+                    rules={[{ required: true, message: 'Please select the status' }]}
+                >
+                    <Select>
+                        {complainsStatuses.map((data) => (
+                            <Option value={data.key} key={data.key}>
+                                {data.value}
+                            </Option>
+                        ))}
+                    </Select>
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">

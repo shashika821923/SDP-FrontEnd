@@ -6,6 +6,7 @@ import HomePageComponent from '../homePage/home.page';
 import CreateAccountPage from '../loginPages/create.account';
 import AddComplaint from '../complains/complains.add';
 import ComplaintTable from '../complains/complins.listing';
+import DashBoardView from '../dashboard/dashboard.view';
 
 function MainRoutes() {
   return (
@@ -16,6 +17,7 @@ function MainRoutes() {
         <Route path="/home" element={<HomePageComponent />} />
         <Route path="/addComplain" element={<AddComplaint />} />
         <Route path="/complainListing" element={<ComplaintTable />} />
+        <Route path="/dashboard" element={<DashBoardView />} />
       </Routes>
     </BrowserRouter>
   );

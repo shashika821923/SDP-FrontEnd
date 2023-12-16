@@ -9,7 +9,7 @@ import AddComplaint from './complains.add';
 import apiCalls from '../loginPages/pages/serviceCalls/api.calls';
 import AddHistoryForComplain from '../History/add.history.form';
 import ComplainHistoryListing from '../History/complains.listing';
-import { departments } from '../enums';
+import { departments, statuses } from '../enums';
 
 const { Option } = Select;
 
@@ -28,6 +28,9 @@ function ComplaintTable() {
   const [isAssigneEmpPopupOpen, setIsAssignEmpPopupOpen] = useState(false);
   const [complianAssignees, setCompplainAssignees] = useState([]);
 
+  const complainsStatuses = [...Object.keys(statuses)
+    .map((key) => ({ key: Number(key), value: statuses[key] }))];
+
   const departmentTypeArray = [{ key: 0, value: 'All' }, ...Object.keys(departments)
     .map((key) => ({ key: Number(key), value: departments[key] }))];
 
@@ -39,10 +42,13 @@ function ComplaintTable() {
   };
 
   const handleOnAssign = (complaint) => {
-    setEditMode(true);
-    forms.setFieldsValue({
-      employeeId: complianAssignees.find((x) => x.complainId === complaint.id).employeeId,
-    });
+    const employeeInfo = complianAssignees.find((x) => x.complainId === complaint.id);
+    if (!_.isUndefined(employeeInfo)) {
+      setEditMode(true);
+      forms.setFieldsValue({
+        employeeId: employeeInfo.employeeId,
+      });
+    }
     setSelectedComplaint(complaint);
   };
 
@@ -178,9 +184,19 @@ function ComplaintTable() {
       key: 'assignedTo',
       render: (text, record) => {
         const emp = complianAssignees.find((x) => x.complainId === record.id);
-        console.log('sss', emp);
         return <span aria-hidden="true">{!_.isEmpty(emp) ? usersInfo.find((x) => x.id === emp.employeeId)?.fullName : ''}</span>;
     },
+    },
+    {
+      title: 'Current Status',
+      key: 'status',
+      render: (text, record) => (
+        <Space size="middle">
+          {// eslint-disable-next-line eqeqeq
+          complainsStatuses.find((x) => x.key == record.status)?.value || ''
+          }
+        </Space>
+      ),
     },
     {
       title: 'Open image in new tab',
