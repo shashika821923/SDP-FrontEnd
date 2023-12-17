@@ -14,6 +14,22 @@ import { departments } from '../enums';
 const { Dragger } = Upload;
 const { Option } = Select;
 
+const backgroundStyle = {
+  backgroundImage: 'url("https://images.unsplash.com/photo-1506452305024-9d3f02d1c9b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+};
+const formContainerStyle = {
+  width: '600px',
+  padding: '30px',
+  background: 'rgba(255, 255, 255, 0.5)',
+  borderRadius: '100px',
+};
+
 // Enum for problem types
 export const ProblemTypes = {
   WILDLIFE: 'wildlife',
@@ -83,7 +99,8 @@ function AddComplaint({ editMode = false, complaintId = null }) {
     };
 
   return (
-    <div>
+  <div style={backgroundStyle}>
+    <div style={formContainerStyle}>
        <h2>{editMode ? 'Edit Complaint' : 'Add Complaint'}</h2>
       <Form form={form} onFinish={onFinish} layout="vertical">
         <Form.Item
@@ -107,7 +124,7 @@ function AddComplaint({ editMode = false, complaintId = null }) {
           name="timeFrame"
           rules={[{ required: true, message: 'Please select the time frame' }]}
         >
-          <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" />
+          <DatePicker showTime format="YYYY-MM-DD HH:mm:ss" style={{ width: '100%' }} />
         </Form.Item>
 
         <Form.Item
@@ -148,6 +165,7 @@ function AddComplaint({ editMode = false, complaintId = null }) {
         </Form.Item>
       </Form>
     </div>
+  </div>
   );
 }
 
