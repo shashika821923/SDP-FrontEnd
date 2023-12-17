@@ -28,7 +28,7 @@ function CreateAccountPage() {
   return (
     <div style={
       {
-        backgroundImage: 'url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center',
+        backgroundImage: 'url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center',
       }
    }>
       <Form
@@ -37,14 +37,14 @@ function CreateAccountPage() {
       layout="vertical"
       style={
         {
-          width: '300px', padding: '20px', background: 'rgba(255, 255, 255, 0.8)', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.8)',
+          width: '500px', padding: '20px', background: 'rgba(255, 255, 255, 0.)', borderRadius: '8px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.8)', margin: 'auto', marginTop: '50px',
         }
      }>
         <Form.Item label="Full Name" name="fullName" rules={[{ required: true, message: 'Please enter your full name' }]}>
-          <Input />
+        <Input />
         </Form.Item>
         <Form.Item label="Email" name="email" rules={[{ required: true, type: 'email', message: 'Please enter a valid email address' }]}>
-          <Input />
+        <Input style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item label="Password" name="password" rules={[{ required: true, message: 'Please enter your password' }]}>
           <Input.Password />
