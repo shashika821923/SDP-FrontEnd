@@ -1,8 +1,11 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 /* eslint-disable import/no-extraneous-dependencies */
 import {
   Table, Space, message, Form, Select, Button, Modal,
 } from 'antd';
+import {
+  EditOutlined, UserAddOutlined, HistoryOutlined, BarsOutlined,
+} from '@ant-design/icons';
 import _ from 'lodash';
 import { getDatabase, ref, onValue } from 'firebase/database';
 import AddComplaint from './complains.add';
@@ -35,6 +38,53 @@ function ComplaintTable() {
     .map((key) => ({ key: Number(key), value: departments[key] }))];
 
   // console.log('shas', forms.getFieldsValue());
+
+  const styles = {
+    container: {
+      backgroundImage: 'url("https://images.unsplash.com/photo-1470115636492-6d2b56f9146d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '20px',
+    },
+    heading: {
+      textAlign: 'center',
+      color: 'black',
+      marginBottom: '20px',
+    },
+    form: {
+      marginBottom: '20px',
+      padding: '20px',
+      background: 'rgba(255, 255, 255, 0.6)',
+      borderRadius: '8px',
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.7)',
+    },
+    button: {
+      background: 'Blue',
+      borderColor: '#blue',
+      marginLeft: '10px',
+    },
+  };
+
+  const formStyle = {
+    maxWidth: '100%',
+    width: '100%',
+    background: 'rgba(255, 255, 255, 0.7)',
+    padding: '20px',
+    borderRadius: '8px',
+    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+  };
+
+  const buttonStyle = {
+    padding: '8px 16px',
+    marginBottom: '8px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+  };
 
   const handleEdit = (complaint) => {
     setEditMode(true);
@@ -214,53 +264,84 @@ function ComplaintTable() {
       dataIndex: 'actions',
       key: 'actions',
       render: (text, record) => (
-        <>
-          <Space size="middle">
-            <Button onClick={() => { handleEdit(record); setIsModelOpen(true); }} type="primary" danger>
-              Edit
-            </Button>
-          </Space>
-          <Space size="left" style={{ marginLeft: '10px' }}>
-            <Button onClick={() => { handleOnAssign(record); setIsAssignEmpPopupOpen(true); }} type="primary" danger>
-              Assign employee
-            </Button>
-          </Space>
-          <Space size="left" style={{ marginLeft: '10px' }}>
-            <Button onClick={() => { handleEdit(record); setIsAddHistoryPopupOpen(true); }} type="primary" danger>
-              Add progress
-            </Button>
-          </Space>
-          <Space size="left" style={{ marginLeft: '10px' }}>
-            <Button onClick={() => { handleEdit(record); setIsHistoryListingOpen(true); }} type="primary" danger>
-              View progress
-            </Button>
-          </Space>
-        </>
+        <div>
+          <Button
+            onClick={() => {
+              handleEdit(record);
+              setIsModelOpen(true);
+            }}
+            type="primary"
+            danger
+            icon={<EditOutlined />}
+            style={buttonStyle}
+          >
+            Edit
+          </Button>
+
+          <Button
+            onClick={() => {
+              handleOnAssign(record);
+              setIsAssignEmpPopupOpen(true);
+            }}
+            type="primary"
+            danger
+            icon={<UserAddOutlined />}
+            style={buttonStyle}
+          >
+            Assign Employee
+          </Button>
+
+          <Button
+            onClick={() => {
+              handleEdit(record);
+              setIsAddHistoryPopupOpen(true);
+            }}
+            type="primary"
+            danger
+            icon={<HistoryOutlined />}
+            style={buttonStyle}
+          >
+            Add Progress
+          </Button>
+
+          <Button
+            onClick={() => {
+              handleEdit(record);
+              setIsHistoryListingOpen(true);
+            }}
+            type="primary"
+            danger
+            icon={<BarsOutlined />}
+            style={buttonStyle}
+          >
+            View Progress
+          </Button>
+        </div>
       ),
     },
   ];
 
   return (
-    <div>
-      <h2>Complaint Table</h2>
-      <Form form={form} onFinish={onChange} layout="vertical">
-        <Form.Item
-          label="Filter by department"
-          name="problemType"
-        >
-          <Select>
-          {departmentTypeArray.map((data) => (
-            <Option value={data.key} key={data.key}>
-              {data.value}
-            </Option>
-          ))}
-          </Select>
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Filter
-          </Button>
-        </Form.Item>
+    <div style={styles.container}>
+      <Form form={form} onFinish={onChange} layout="vertical" style={formStyle}>
+      <h2 style={styles.heading}>Complaint Table</h2>
+                  <Form.Item
+                    label="Filter by department"
+                    name="problemType"
+                  >
+                    <Select style={{ width: '100%' }}>
+                    {departmentTypeArray.map((data) => (
+                      <Option value={data.key} key={data.key}>
+                        {data.value}
+                      </Option>
+                    ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item>
+                    <Button type="primary" htmlType="submit" style={styles.button}>
+                      Filter
+                    </Button>
+                  </Form.Item>
       </Form>
       <Table dataSource={complaints} columns={columns} />
 

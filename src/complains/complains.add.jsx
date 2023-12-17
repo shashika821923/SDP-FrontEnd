@@ -25,9 +25,9 @@ const backgroundStyle = {
 };
 const formContainerStyle = {
   width: '600px',
-  padding: '30px',
-  background: 'rgba(255, 255, 255, 0.5)',
-  borderRadius: '100px',
+  padding: '50px',
+  background: 'rgba(255, 255, 255, 0.8)',
+  borderRadius: '10px',
 };
 
 // Enum for problem types
