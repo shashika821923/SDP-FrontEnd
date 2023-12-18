@@ -96,7 +96,7 @@ function App() {
       borderRadius: '50%',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
       opacity: isSidePanelOpen ? 0 : 1, // Updated opacity property
-      transition: 'opacity 0.3s ease', // Updated transition
+      transition: 'opacity 0.9s ease', // Updated transition
     },
   };
 
