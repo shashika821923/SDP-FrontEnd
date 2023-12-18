@@ -18,7 +18,11 @@ function App() {
     // Automatically hide the side panel when any button is pressed
     closeSidePanel();
   };
-  const buttonLabel = isSidePanelOpen ? 'Navigation' : '';
+  const toggleSidePanelFromInside = () => {
+    // Toggle the side panel when the inside corner trigger is clicked
+    setSidePanelOpen(!isSidePanelOpen);
+  };
+  const buttonLabel = isSidePanelOpen ? 'Navigation' : 'Close';
 
   const styles = {
     app: {
@@ -31,13 +35,13 @@ function App() {
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       color: 'white',
-      transition: 'width 0.3s ease, margin-left 0.3s ease, opacity 0.3s ease', // Updated transition
+      transition: 'width 0.1s ease, margin-left 3s ease, opacity 0.4s ease',
       overflow: 'hidden',
       position: 'fixed',
       top: 0,
       left: 0,
       zIndex: 1,
-      opacity: isSidePanelOpen ? 1 : 0, // Updated opacity property
+      opacity: isSidePanelOpen ? 1 : 0,
     },
     mainContent: {
       flexGrow: 1,
@@ -76,27 +80,34 @@ function App() {
       fontSize: 0,
       overflow: 'hidden',
       visibility: isSidePanelOpen ? 'hidden' : 'visible',
-      backgroundImage: 'url("https://i.ibb.co/1KkHqzN/image.png")', // Use a smaller image
+      backgroundImage: 'url("https://i.ibb.co/1KkHqzN/image.png")',
       backgroundSize: 'contain',
       backgroundPosition: 'center',
-      transition: 'transform 0.3s ease, opacity 0.3s ease', // Updated transition
+      transition: 'transform 0.3s ease, opacity 0.3s ease',
       borderRadius: '20%',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      opacity: isSidePanelOpen ? 0 : 3, // Updated opacity property
+      opacity: isSidePanelOpen ? 0 : 1,
     },
     cornerTriggerInsidePanel: {
-      width: '40px',
-      height: '40px',
       position: 'absolute',
-      top: '20px',
+      bottom: '20px', // Adjusted position to be below the buttons
       left: '20px',
-      background: 'rgba(255, 255, 255, 0.7)',
-      overflow: 'hidden',
+      width: '32px',
+      height: '32px',
       cursor: 'pointer',
-      borderRadius: '50%',
+      zIndex: 2,
+      border: 'none',
+      background: 'rgba(0, 255, 0, 0.1)',
+      padding: 0,
+      fontSize: 0,
+      overflow: 'hidden',
+      backgroundImage: 'url("https://i.ibb.co/bL2wdV8/icons8-thumbnail-view.gif")',
+      backgroundSize: 'contain',
+      backgroundPosition: 'center',
+      transition: 'transform 20s ease, opacity 10s ease',
+      borderRadius: '20%',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      opacity: isSidePanelOpen ? 0 : 1, // Updated opacity property
-      transition: 'opacity s ease', // Updated transition
+      opacity: isSidePanelOpen ? 1 : 0, // Updated opacity property
     },
   };
 
@@ -136,8 +147,7 @@ function App() {
         {buttonLabel}
       </button>
       <div style={styles.sidePanel}>
-        <button style={styles.cornerTrigger} type="button" onClick={toggleSidePanel}>
-          {/* You can customize the style for the corner trigger inside the panel */}
+        <button style={styles.cornerTriggerInsidePanel} type="button" onClick={toggleSidePanelFromInside}>
           {buttonLabel}
         </button>
         {buttonList}
