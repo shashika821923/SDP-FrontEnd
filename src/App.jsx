@@ -66,23 +66,23 @@ function App() {
       position: 'fixed',
       top: 20,
       left: 20,
-      width: '60px',
-      height: '60px',
+      width: '32px',
+      height: '32px',
       cursor: 'pointer',
       zIndex: 2,
       border: 'none',
-      background: 'rgba(255, 255, 255, 0.7)',
+      background: 'rgba(255, 255, 255, 0.5)',
       padding: 0,
       fontSize: 0,
       overflow: 'hidden',
       visibility: isSidePanelOpen ? 'hidden' : 'visible',
-      backgroundImage: 'url("https://i.ibb.co/1KkHqzN/image.png")',
+      backgroundImage: 'url("https://i.ibb.co/1KkHqzN/image.png")', // Use a smaller image
       backgroundSize: 'contain',
       backgroundPosition: 'center',
       transition: 'transform 0.3s ease, opacity 0.3s ease', // Updated transition
-      borderRadius: '50%',
+      borderRadius: '20%',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
-      opacity: isSidePanelOpen ? 0 : 1, // Updated opacity property
+      opacity: isSidePanelOpen ? 0 : 3, // Updated opacity property
     },
     cornerTriggerInsidePanel: {
       width: '40px',
@@ -96,7 +96,7 @@ function App() {
       borderRadius: '50%',
       boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
       opacity: isSidePanelOpen ? 0 : 1, // Updated opacity property
-      transition: 'opacity 0.9s ease', // Updated transition
+      transition: 'opacity s ease', // Updated transition
     },
   };
 
