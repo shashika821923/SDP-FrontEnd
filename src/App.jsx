@@ -49,7 +49,7 @@ function App() {
   // };
 
   const handleButtonClick = (url) => {
-    window.open(`/${url}`, '_self');
+    window.location.replace(`/${url}`);
   };
   const toggleSidePanelFromInside = () => {
     // Toggle the side panel when the inside corner trigger is clicked
@@ -157,7 +157,12 @@ function App() {
         )}
         <li>
           <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('complainListing')}>
-            Complain listing
+            Complaint listing
+          </button>
+        </li>
+        <li>
+          <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('addComplain')}>
+            Add Complaint
           </button>
         </li>
         <li>
