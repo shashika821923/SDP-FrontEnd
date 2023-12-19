@@ -161,6 +161,19 @@ function ComplaintTable() {
     if (usersInfo.length > 0 && complianAssignees.length > 0) fetchData();
   }, [filters, usersInfo, complianAssignees]);
 
+  const showNotification = () => {
+    if ('Notification' in window) {
+      // Check if the browser supports notifications
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          // Display the notification
+          /* eslint-disable no-new */
+          new Notification('New changes deetcted on complains');
+        }
+      });
+    }
+  };
+
   useEffect(() => {
     const complaintsRef = ref(getDatabase(), 'complainsAssignees');
 
@@ -169,7 +182,7 @@ function ComplaintTable() {
         onValue(complaintsRef, (snapshot) => {
           const data = snapshot.val();
           if (data) {
-            // eslint-disable-next-line eqeqeq
+            showNotification();
             const filteredComplaints = Object.keys(data).map((key) => ({
                 id: key,
                 ...data[key],
