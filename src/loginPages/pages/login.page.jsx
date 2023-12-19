@@ -20,7 +20,7 @@ function LoginComponent() {
       setUserId(userData.user.reloadUserInfo.localId);
       message.success('Login successful!');
       window.localStorage.setItem('userId', userData.user.reloadUserInfo.localId);
-      // window.location.replace('/complainListing');
+      window.location.replace('/complainListing');
     } catch (error) {
       message.error('Login failed. Please check your email and password.');
     }

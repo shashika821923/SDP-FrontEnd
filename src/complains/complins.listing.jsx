@@ -317,7 +317,7 @@ function ComplaintTable() {
           </Button>
           )}
 
-          {loggedInUserId === emp.employeeId && (
+          {!_.isUndefined(emp) && loggedInUserId === emp.employeeId && (
           <Button
             onClick={() => {
               handleEdit(record);
