@@ -1,23 +1,36 @@
-import React, { useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
+/* eslint-disable import/no-extraneous-dependencies */
 import './App.css';
 import './global.css';
 // import HomePageComponent from './homePage/home.page';
+import _ from 'lodash';
 import MainRoutes from './routes/main.routes';
 
 function App() {
   const [isSidePanelOpen, setSidePanelOpen] = useState(true);
+  const [urlLink, setUrlLink] = useState();
+
+  useEffect(() => {
+    // Get the current pathname from the URL
+    const currentPathname = window.location.pathname;
+
+    // Extract the last part of the pathname
+    const lastRoute = currentPathname.split('/').filter(Boolean).pop();
+
+    // Do something with the last route
+    setUrlLink(lastRoute);
+  }, []);
 
   const toggleSidePanel = () => {
     setSidePanelOpen(!isSidePanelOpen);
   };
 
-  const closeSidePanel = () => {
-    setSidePanelOpen(false);
-  };
+  // const closeSidePanel = () => {
+  //   setSidePanelOpen(false);
+  // };
 
-  const handleButtonClick = () => {
-    // Automatically hide the side panel when any button is pressed
-    closeSidePanel();
+  const handleButtonClick = (url) => {
+    window.location.replace(`/${url}`);
   };
   const toggleSidePanelFromInside = () => {
     // Toggle the side panel when the inside corner trigger is clicked
@@ -115,28 +128,18 @@ function App() {
   const buttonList = (
     <ul style={styles.buttonList}>
       <li>
-        <button style={styles.navigationButton} type="button" onClick={handleButtonClick}>
-          Button 1
+        <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('dashboard')}>
+          Dashboard
+        </button>
+      </li>
+      <li>
+        <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('complainListing')}>
+          Complain listing
         </button>
       </li>
       <li>
         <button style={styles.navigationButton} type="button" onClick={handleButtonClick}>
-          Button 2
-        </button>
-      </li>
-      <li>
-        <button style={styles.navigationButton} type="button" onClick={handleButtonClick}>
-          Button 3
-        </button>
-      </li>
-      <li>
-        <button style={styles.navigationButton} type="button" onClick={handleButtonClick}>
-          Button 4
-        </button>
-      </li>
-      <li>
-        <button style={styles.navigationButton} type="button" onClick={handleButtonClick}>
-          Button 5
+          Log out
         </button>
       </li>
     </ul>
@@ -144,6 +147,8 @@ function App() {
 
   return (
     <div style={styles.app}>
+      {!_.isUndefined(urlLink) && urlLink != 'signup' && (
+      <>
       <button style={styles.cornerTrigger} type="button" onClick={toggleSidePanel}>
         {buttonLabel}
       </button>
@@ -153,6 +158,8 @@ function App() {
         </button>
         {buttonList}
       </div>
+      </>
+      )}
       <div style={styles.mainContent}>
         <MainRoutes />
       </div>
