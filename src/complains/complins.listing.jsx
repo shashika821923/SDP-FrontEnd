@@ -30,6 +30,7 @@ function ComplaintTable() {
   const [isHistoryLisingOpen, setIsHistoryListingOpen] = useState(false);
   const [isAssigneEmpPopupOpen, setIsAssignEmpPopupOpen] = useState(false);
   const [complianAssignees, setCompplainAssignees] = useState([]);
+  const currentUserId = localStorage.getItem('userId');
 
   const complainsStatuses = [...Object.keys(statuses)
     .map((key) => ({ key: Number(key), value: statuses[key] }))];
@@ -37,7 +38,25 @@ function ComplaintTable() {
   const departmentTypeArray = [{ key: 0, value: 'All' }, ...Object.keys(departments)
     .map((key) => ({ key: Number(key), value: departments[key] }))];
 
-  // console.log('shas', forms.getFieldsValue());
+    function applyFilters(dataSource) {
+      const loggedInUserId = currentUserId;
+      let filterdData = dataSource;
+      const selctedUser = usersInfo.find((x) => x.id == loggedInUserId);
+      if (selctedUser.userType == 2) {
+        const assignedComplaints = complianAssignees
+          .filter((x) => x.employeeId === loggedInUserId)
+          .map((complaint) => complaint.complainId);
+        filterdData = filterdData
+          .filter((x) => assignedComplaints.some((assignedId) => assignedId === x.id));
+      } else if (selctedUser.userType == 1) {
+        filterdData = filterdData.filter((x) => x.complainedBy == loggedInUserId);
+      }
+      if (filters.problemType != 0) {
+        filterdData = filterdData.filter((x) => x.problemType == filters.problemType);
+      }
+
+      return filterdData;
+    }
 
   const styles = {
     container: {
@@ -124,17 +143,10 @@ function ComplaintTable() {
 
           if (data) {
             // eslint-disable-next-line eqeqeq
-            const filteredComplaints = (filters.problemType !== 0)
-            // eslint-disable-next-line eqeqeq
-             ? Object.keys(data)
-              .filter((key) => data[key].problemType == filters.problemType)
-              .map((key) => ({
-                id: key,
-                ...data[key],
-              })) : Object.keys(data).map((key) => ({
-                id: key,
-                ...data[key],
-              }));
+            const filteredComplaints = applyFilters(Object.keys(data).map((key) => ({
+              id: key,
+              ...data[key],
+            })));
             setComplaints(filteredComplaints);
           } else {
             setComplaints([]);
@@ -145,8 +157,8 @@ function ComplaintTable() {
       }
     };
 
-     fetchData();
-  }, [filters]);
+    if (usersInfo.length > 0 && complianAssignees.length > 0) fetchData();
+  }, [filters, usersInfo, complianAssignees]);
 
   useEffect(() => {
     const complaintsRef = ref(getDatabase(), 'complainsAssignees');
@@ -155,7 +167,6 @@ function ComplaintTable() {
       try {
         onValue(complaintsRef, (snapshot) => {
           const data = snapshot.val();
-
           if (data) {
             // eslint-disable-next-line eqeqeq
             const filteredComplaints = Object.keys(data).map((key) => ({
@@ -263,8 +274,13 @@ function ComplaintTable() {
       title: 'Actions',
       dataIndex: 'actions',
       key: 'actions',
-      render: (text, record) => (
+      render: (text, record) => {
+      const loggedInUserId = currentUserId;
+      const selctedUser = usersInfo.find((x) => x.id == loggedInUserId);
+      const emp = complianAssignees.find((x) => x.complainId === record.id);
+        return (
         <div>
+          {record.complainedBy === loggedInUserId && (
           <Button
             onClick={() => {
               handleEdit(record);
@@ -277,7 +293,9 @@ function ComplaintTable() {
           >
             Edit
           </Button>
+          )}
 
+          {selctedUser.userType == 3 && (
           <Button
             onClick={() => {
               handleOnAssign(record);
@@ -290,7 +308,9 @@ function ComplaintTable() {
           >
             Assign Employee
           </Button>
+          )}
 
+          {loggedInUserId === emp.employeeId && (
           <Button
             onClick={() => {
               handleEdit(record);
@@ -303,6 +323,7 @@ function ComplaintTable() {
           >
             Add Progress
           </Button>
+          )}
 
           <Button
             onClick={() => {
@@ -317,7 +338,8 @@ function ComplaintTable() {
             View Progress
           </Button>
         </div>
-      ),
+        );
+      },
     },
   ];
 

@@ -19,6 +19,8 @@ function LoginComponent() {
       const userData = await signInWithEmailAndPassword(auth, email, password);
       setUserId(userData.user.reloadUserInfo.localId);
       message.success('Login successful!');
+      window.localStorage.setItem('userId', userData.user.reloadUserInfo.localId);
+      // window.location.replace('/complainListing');
     } catch (error) {
       message.error('Login failed. Please check your email and password.');
     }
@@ -61,7 +63,7 @@ function LoginComponent() {
   return (
     <div style={containerStyle}>
       <Form form={form} onFinish={onFinish} layout="vertical" style={formStyle}>
-      <h1 style={{ color: 'black', textAlign: 'center', marginBottom: '20px' }}>Login</h1>
+        <h1 style={{ color: 'black', textAlign: 'center', marginBottom: '20px' }}>Login</h1>
         <Form.Item
           label="Email"
           name="email"

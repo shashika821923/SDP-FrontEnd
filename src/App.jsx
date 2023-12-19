@@ -5,10 +5,29 @@ import './global.css';
 // import HomePageComponent from './homePage/home.page';
 import _ from 'lodash';
 import MainRoutes from './routes/main.routes';
+import { auth } from './configurations/firebase';
+import apiCalls from './loginPages/pages/serviceCalls/api.calls';
 
 function App() {
   const [isSidePanelOpen, setSidePanelOpen] = useState(true);
   const [urlLink, setUrlLink] = useState();
+  const [usersInfo, setUsersInfo] = useState([]);
+  const [currentUser, setCurrentUser] = useState();
+
+  const getUserInformation = (userid) => {
+    apiCalls.getUserInformation(userid).then((userInfo) => setUsersInfo(userInfo));
+  };
+
+  useEffect(() => {
+    getUserInformation();
+  }, []);
+
+  useEffect(() => {
+    const user = localStorage.getItem('userId');
+    if (usersInfo.length > 0) {
+      setCurrentUser(usersInfo.find((x) => x.id == user));
+     }
+  }, [auth, usersInfo]);
 
   useEffect(() => {
     // Get the current pathname from the URL
@@ -30,12 +49,13 @@ function App() {
   // };
 
   const handleButtonClick = (url) => {
-    window.location.replace(`/${url}`);
+    window.open(`/${url}`, '_self');
   };
   const toggleSidePanelFromInside = () => {
     // Toggle the side panel when the inside corner trigger is clicked
     setSidePanelOpen(!isSidePanelOpen);
   };
+
   const buttonLabel = isSidePanelOpen ? 'Navigation' : 'Close';
 
   const styles = {
@@ -125,29 +145,33 @@ function App() {
     },
   };
 
-  const buttonList = (
-    <ul style={styles.buttonList}>
-      <li>
-        <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('dashboard')}>
-          Dashboard
-        </button>
-      </li>
-      <li>
-        <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('complainListing')}>
-          Complain listing
-        </button>
-      </li>
-      <li>
-        <button style={styles.navigationButton} type="button" onClick={handleButtonClick}>
-          Log out
-        </button>
-      </li>
-    </ul>
+  function buttonList() {
+    return (
+      <ul style={styles.buttonList}>
+        {currentUser.userType == 3 && (
+          <li>
+            <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('dashboard')}>
+              Dashboard
+            </button>
+          </li>
+        )}
+        <li>
+          <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('complainListing')}>
+            Complain listing
+          </button>
+        </li>
+        <li>
+          <button style={styles.navigationButton} type="button" onClick={() => auth.signOut()}>
+            Log out
+          </button>
+        </li>
+      </ul>
   );
+  }
 
   return (
     <div style={styles.app}>
-      {!_.isUndefined(urlLink) && urlLink != 'signup' && (
+      {!_.isUndefined(urlLink) && !_.isUndefined(currentUser) && urlLink != 'signup' && (
       <>
       <button style={styles.cornerTrigger} type="button" onClick={toggleSidePanel}>
         {buttonLabel}
@@ -156,7 +180,7 @@ function App() {
         <button style={styles.cornerTriggerInsidePanel} type="button" onClick={toggleSidePanelFromInside}>
           {buttonLabel}
         </button>
-        {buttonList}
+        {buttonList()}
       </div>
       </>
       )}
