@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import './global.css';
 // import HomePageComponent from './homePage/home.page';
 import MainRoutes from './routes/main.routes';
 
