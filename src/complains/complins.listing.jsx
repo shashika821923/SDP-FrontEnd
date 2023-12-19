@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 /* eslint-disable import/no-extraneous-dependencies */
+import moment from 'moment';
 import {
   Table, Space, message, Form, Select, Button, Modal,
 } from 'antd';
@@ -220,7 +221,13 @@ function ComplaintTable() {
     {
       title: 'Time Frame',
       dataIndex: 'timeFrame',
-      key: 'timeFrame',
+      render: (text, record) => (
+        <Space size="middle">
+          {// eslint-disable-next-line eqeqeq
+            moment(record.timeFrame).format('MMMM DD, YYYY HH:mm:ss z')
+          }
+        </Space>
+      ),
     },
     {
       title: 'Problem Type',
