@@ -56,74 +56,94 @@ function LoginComponent() {
 
   const containerStyle = {
     background: 'url("https://i.ibb.co/q9pmSSm/pexels-creative-vix-9754.jpg") no-repeat center center fixed',
-    backgroundSize: 'cover',
+    backgroundSize: '100% 100%',
     height: '100vh',
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     alignItems: 'center',
+  };
+
+  const leftContentStyle = {
+    textAlign: 'left',
+    marginLeft: '30px', // Adjust the left margin as needed
+    color: 'white',
+  };
+
+  const rightContentStyle = {
+    width: '50%',
+    marginRight: '1px', // Adjust the right margin as needed
   };
 
   const formStyle = {
     maxWidth: '500px',
-    width: '130%',
+    width: '100%', // Make the form take full width of the container
     background: 'rgba(255, 255, 255, 0.7)',
-    padding: '25px',
+    padding: '45px',
     borderRadius: '15px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.8)',
     opacity: isFormVisible ? 1 : 0,
-    transition: 'opacity 0.5s ease', // CSS transition for opacity
+    transition: 'opacity 0.5s ease',
+    marginBottom: '-80px',
   };
 
   const signupLinkStyle = {
     display: 'block',
     textAlign: 'left',
-    marginTop: '30px', // Adjust the margin as needed
-    color: '#1999Cf', // Ant Design primary color
+    marginTop: '30px',
+    color: '#1999Cf',
     cursor: 'pointer',
   };
 
   return (
     <div style={containerStyle}>
-      <Form form={form} onFinish={onFinish} layout="vertical" style={formStyle}>
-        <h1 style={{ color: 'black', textAlign: 'center', marginBottom: '20px' }}>Login</h1>
-        <Form.Item
-          label="Email"
-          name="email"
-          rules={[
-            { required: true, message: 'Please enter your email' },
-            { type: 'email', message: 'Please enter a valid email address' },
-          ]}
-          style={{ marginBottom: '15px' }}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="Password"
-          name="password"
-          rules={[{ required: true, message: 'Please enter your password' }]}
-          style={{ marginBottom: '40px' }} // button gap
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" style={{ float: 'right' }}>
-            Login
-          </Button>
-        </Form.Item>
-        <span
-          role="button"
-          tabIndex={0}
-          onClick={() => { window.location.href = 'signup'; }}
-          onKeyPress={(e) => {
-            if (e.key === 'Enter') {
+      <div style={leftContentStyle}>
+        <h1 style={{ fontSize: '76px', marginBottom: '-10px' }}>NatureGuard</h1>
+        <p style={{ fontSize: '14px' }}>Environmental Crime Reporting System (ECRS)</p>
+      </div>
+      <div style={rightContentStyle}>
+        <Form form={form} onFinish={onFinish} layout="vertical" style={formStyle}>
+          <h1 style={{ color: 'black', textAlign: 'center', marginBottom: '20px' }}>Login</h1>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, message: 'Please enter your email' },
+              { type: 'email', message: 'Please enter a valid email address' },
+            ]}
+            style={{ marginBottom: '15px' }}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            label="Password"
+            name="password"
+            rules={[{ required: true, message: 'Please enter your password' }]}
+            style={{ marginBottom: '40px' }}
+          >
+            <Input.Password />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" style={{ float: 'right' }}>
+              Login
+            </Button>
+          </Form.Item>
+          <span
+            role="button"
+            tabIndex={0}
+            onClick={() => {
               window.location.href = 'signup';
-            }
-          }}
-          style={signupLinkStyle}
-        >
-          Signup
-        </span>
-      </Form>
+            }}
+            onKeyPress={(e) => {
+              if (e.key === 'Enter') {
+                window.location.href = 'signup';
+              }
+            }}
+            style={signupLinkStyle}
+          >
+            Signup
+          </span>
+        </Form>
+      </div>
     </div>
   );
 }
