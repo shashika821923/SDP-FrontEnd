@@ -165,6 +165,13 @@ function App() {
             Add Complaint
           </button>
         </li>
+        {currentUser.userType == 3 && (
+        <li>
+          <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('userList')}>
+            User list
+          </button>
+        </li>
+        )}
         <li>
           <button style={styles.navigationButton} type="button" onClick={() => auth.signOut()}>
             Log out

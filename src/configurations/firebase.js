@@ -1,7 +1,6 @@
-/* eslint-disable import/no-extraneous-dependencies */
 import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
+import { getAuth, deleteUser } from 'firebase/auth';
+import { getDatabase, ref, remove } from 'firebase/database';
 import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
@@ -13,11 +12,29 @@ const firebaseConfig = {
   appId: '1:795917315560:web:ccb518b03e95ab70ab485d',
   measurementId: 'G-GHKEMY1MK5',
 };
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
 const storage = getStorage(app);
 
+const deleteUserById = async (userId) => {
+  console.log(userId);
+  const userRef = ref(database, `users/${userId}`);
+
+  try {
+    // Delete user from Firebase Authentication
+    await deleteUser(auth.currentUser);
+
+    // Delete user from Firebase Realtime Database
+    remove(userRef);
+
+    console.log('User deleted successfully.');
+  } catch (error) {
+    console.error('Failed to delete user:', error.message);
+  }
+};
+
 export {
-     app, auth, database, storage,
- };
+  app, auth, database, storage, deleteUserById,
+};

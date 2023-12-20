@@ -7,6 +7,7 @@ import CreateAccountPage from '../loginPages/create.account';
 import AddComplaint from '../complains/complains.add';
 import ComplaintTable from '../complains/complins.listing';
 import DashBoardView from '../dashboard/dashboard.view';
+import UsersList from '../users/users.lisitng';
 
 function MainRoutes() {
   return (
@@ -18,6 +19,7 @@ function MainRoutes() {
         <Route path="/addComplain" element={<AddComplaint />} />
         <Route path="/complainListing" element={<ComplaintTable />} />
         <Route path="/dashboard" element={<DashBoardView />} />
+        <Route path="/userList" element={<UsersList />} />
       </Routes>
     </BrowserRouter>
   );
