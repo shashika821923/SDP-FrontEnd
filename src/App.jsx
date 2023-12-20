@@ -71,9 +71,11 @@ function App() {
     },
     mainContent: {
       flexGrow: 1,
-      padding: '0px',
+      padding: '0px', // Add padding to the main content
       transition: 'margin-left 0.3s ease',
       marginLeft: isSidePanelOpen ? '200px' : '0',
+      backgroundColor: '#f5f5f5', // Set background color
+      boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)', // Add box-shadow
     },
     buttonList: {
       listStyle: 'none',

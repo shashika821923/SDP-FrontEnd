@@ -10,31 +10,33 @@ const Wrapper = styled(Container)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 200px;
-  height: 200vh;
-  background-image: url('https://i.ibb.co/VYnyNhF/pexels-rachel-claire-4992805.jpg');
+  padding: 20px;
+  height: 100vh; /* Adjusted height to fill the viewport */
+
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
   color: #fff;
 `;
-const ChartContainer = styled.div`
-  width: 100%;
-  height: 100%;
-  margin-bottom: 10px;
-  background: rgba(255, 255, 255, 1);
-  padding: 30px;
-  border-radius: 10px;
+
+const ChartForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
-export const options = {
-  title: 'My Daily Activities',
-};
-const AnimatedChartContainer = styled(ChartContainer)`
+const AnimatedChartContainer = styled.div`
+  width: 1000px;
+  height: 300px; /* Set the desired height */
+  margin-bottom: 40px;
+  background: rgba(255, 255, 255, 1);
+  padding: 50px;
+  border-radius: 10px;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(10px);
   animation: fadeInUp 0.8s ease-out forwards;
   animation-delay: ${(props) => props.delay || 0}s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 
   @keyframes fadeInUp {
     to {
@@ -43,6 +45,16 @@ const AnimatedChartContainer = styled(ChartContainer)`
     }
   }
 `;
+
+export const options1 = {
+  title: 'Wildlife and Forest Complaints',
+};
+export const options2 = {
+  title: 'Distribution of Wildlife and Forest Complaints',
+};
+export const options3 = {
+  title: 'Complaint Status',
+};
 
 function DashBoardView() {
   const [complaints, setComplaints] = useState([]);
@@ -126,23 +138,32 @@ function DashBoardView() {
 
   return (
     <Wrapper>
-      <Row>
-        <Col md={4}>
-          <AnimatedChartContainer delay={0.2}>
-            <Chart chartType="PieChart" data={complainCategoriesChart} options={options} />
-          </AnimatedChartContainer>
-        </Col>
-        <Col md={4}>
-          <AnimatedChartContainer delay={0.4}>
-            <Chart chartType="PieChart" data={complainStatus} options={options} />
-          </AnimatedChartContainer>
-        </Col>
-        <Col md={4}>
-          <AnimatedChartContainer delay={0.6}>
-            <Chart chartType="PieChart" data={assignedStatus} options={options} />
-          </AnimatedChartContainer>
-        </Col>
-      </Row>
+      <ChartForm>
+        <h1 style={{ color: 'black', textAlign: 'center', marginBottom: '20px' }}>Dashboard</h1>
+        <Row>
+          <Col md={12}>
+            <AnimatedChartContainer delay={0.2}>
+              <Chart chartType="PieChart" data={complainCategoriesChart} options={options1} />
+            </AnimatedChartContainer>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={12}>
+            <AnimatedChartContainer delay={0.4}>
+              <Chart chartType="PieChart" data={complainStatus} options={options2} />
+            </AnimatedChartContainer>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={12}>
+            <AnimatedChartContainer delay={0.6}>
+              <Chart chartType="PieChart" data={assignedStatus} options={options3} />
+            </AnimatedChartContainer>
+          </Col>
+        </Row>
+      </ChartForm>
       <div className="mt-4">dasdads</div>
     </Wrapper>
   );

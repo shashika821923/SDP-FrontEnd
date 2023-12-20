@@ -43,7 +43,7 @@ function CreateAccountPage() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundSize: 'cover',
+        backgroundSize: '120%',
       }}
     >
       <Form
@@ -56,8 +56,8 @@ function CreateAccountPage() {
           background: 'rgba(255, 255, 255, 0.8)',
           borderRadius: '8px',
           boxShadow: '0 0 10px rgba(0, 0, 0, 0.3)',
-          margin: 'auto',
-          marginTop: '50px',
+          margin: '0px',
+          marginTop: '10px',
         }}
       >
         <Form.Item label="Full Name" name="fullName" rules={[{ required: true, message: 'Please enter your full name' }]}>
