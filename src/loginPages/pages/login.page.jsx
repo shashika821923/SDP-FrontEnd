@@ -103,6 +103,19 @@ function LoginComponent() {
           </Button>
         </Form.Item>
       </Form>
+      <span
+        role="button"
+        tabIndex={0}
+        onClick={() => { window.location.href = 'signup'; }}
+        onKeyPress={(e) => {
+          if (e.key === 'Enter') {
+            window.location.href = 'signup';
+          }
+        }}
+      >
+        Signup
+      </span>
+
     </div>
   );
 }

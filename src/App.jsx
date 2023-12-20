@@ -164,6 +164,13 @@ function App() {
           </button>
         </li>
         )}
+        {currentUser.userType == 3 && (
+        <li>
+          <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('addOfficers')}>
+            Add officers
+          </button>
+        </li>
+        )}
         <li>
           <button style={styles.navigationButton} type="button" onClick={() => auth.signOut()}>
             Log out
