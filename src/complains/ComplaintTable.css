@@ -1,0 +1,24 @@
+/* ComplaintTable.css */
+
+@keyframes fadeIn {
+    from {
+      opacity: 7;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInUp {
+    from {
+      transform: translateY(50px);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  
+  .container {
+    animation: fadeIn 0.5s ease-in-out, slideInUp 0.5s ease-in-out;
+  }
+  

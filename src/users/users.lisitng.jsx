@@ -8,8 +8,10 @@ import {
 import {
     deleteUserById,
  } from '../configurations/firebase'; // Import the deleteUser method
+ import 'bootstrap/dist/css/bootstrap.min.css';
+ import './UsersList.css';
 
-function UsersList() {
+ function UsersList() {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -84,7 +86,13 @@ function UsersList() {
     },
   ];
 
-  return <Table dataSource={users} columns={columns} />;
+  return (
+    <div className="users-list-container">
+      <div className="overlay" />
+      <img src="https://i.ibb.co/3RQ1WPP/pexels-mali-maeder-142497.jpg" alt="UsersList Background" className="users-list-background" />
+      <Table dataSource={users} columns={columns} className="custom-ant-table" />
+    </div>
+  );
 }
 
 export default UsersList;

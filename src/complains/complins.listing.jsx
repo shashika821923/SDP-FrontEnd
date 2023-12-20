@@ -61,7 +61,7 @@ function ComplaintTable() {
 
   const styles = {
     container: {
-      backgroundImage: 'url("https://images.unsplash.com/photo-1470115636492-6d2b56f9146d?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+      backgroundImage: 'url("https://i.ibb.co/q9pmSSm/pexels-creative-vix-9754.jpg")',
       backgroundSize: 'cover',
       backgroundPosition: 'center',
       minHeight: '100vh',

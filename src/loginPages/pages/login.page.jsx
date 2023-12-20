@@ -55,7 +55,7 @@ function LoginComponent() {
   }, []);
 
   const containerStyle = {
-    background: 'url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed',
+    background: 'url("https://i.ibb.co/q9pmSSm/pexels-creative-vix-9754.jpg") no-repeat center center fixed',
     backgroundSize: 'cover',
     height: '100vh',
     display: 'flex',
@@ -66,8 +66,8 @@ function LoginComponent() {
   const formStyle = {
     maxWidth: '500px',
     width: '130%',
-    background: 'rgba(255, 255, 255, 0.4)',
-    padding: '20px',
+    background: 'rgba(255, 255, 255, 0.7)',
+    padding: '25px',
     borderRadius: '15px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.8)',
     opacity: isFormVisible ? 1 : 0,

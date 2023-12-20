@@ -1,0 +1,53 @@
+/* UsersList.css */
+
+.users-list-container {
+    position: relative;
+    padding: 20px;
+  }
+  
+  .users-list-background {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+  
+  .users-list-background::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3); /* Adjust the transparency and color here */
+    z-index: -1;
+  }
+  
+  .custom-ant-table {
+    background-color: rgba(255, 255, 255, 0.8); /* Adjust the transparency here */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .ant-table-title {
+    font-size: 18px;
+    color: #fff; /* Adjust the text color here */
+    margin-bottom: 15px;
+  }
+  
+  .ant-table-thead th {
+    background-color: rgba(245, 245, 245, 0.8); /* Adjust the transparency here */
+  }
+  
+  .ant-table-tbody tr:nth-child(even) {
+    background-color: rgba(249, 249, 249, 0.8); /* Adjust the transparency here */
+  }
+  
+  .ant-table-tbody tr:hover {
+    background-color: rgba(230, 247, 255, 0.8); /* Adjust the transparency here */
+  }
+  
