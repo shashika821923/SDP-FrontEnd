@@ -74,6 +74,14 @@ function LoginComponent() {
     transition: 'opacity 0.5s ease', // CSS transition for opacity
   };
 
+  const signupLinkStyle = {
+    display: 'block',
+    textAlign: 'left',
+    marginTop: '30px', // Adjust the margin as needed
+    color: '#1999Cf', // Ant Design primary color
+    cursor: 'pointer',
+  };
+
   return (
     <div style={containerStyle}>
       <Form form={form} onFinish={onFinish} layout="vertical" style={formStyle}>
@@ -102,20 +110,20 @@ function LoginComponent() {
             Login
           </Button>
         </Form.Item>
+        <span
+          role="button"
+          tabIndex={0}
+          onClick={() => { window.location.href = 'signup'; }}
+          onKeyPress={(e) => {
+            if (e.key === 'Enter') {
+              window.location.href = 'signup';
+            }
+          }}
+          style={signupLinkStyle}
+        >
+          Signup
+        </span>
       </Form>
-      <span
-        role="button"
-        tabIndex={0}
-        onClick={() => { window.location.href = 'signup'; }}
-        onKeyPress={(e) => {
-          if (e.key === 'Enter') {
-            window.location.href = 'signup';
-          }
-        }}
-      >
-        Signup
-      </span>
-
     </div>
   );
 }
