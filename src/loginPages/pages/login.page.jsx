@@ -7,11 +7,14 @@ import {
 import { ref, onValue } from 'firebase/database';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth, database } from '../../configurations/firebase';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './LoginComponent.css';
 
 function LoginComponent() {
   const [form] = Form.useForm();
   const [userId, setUserId] = useState(null);
   const [userDataObj, setUserData] = useState('');
+  const [isFormVisible, setFormVisible] = useState(false);
 
   const onFinish = async (values) => {
     const { email, password } = values;
@@ -42,6 +45,15 @@ function LoginComponent() {
     console.log('userData:', userDataObj);
   }, [userDataObj]);
 
+  useEffect(() => {
+    // Delay the form visibility to create an animation effect
+    const timeout = setTimeout(() => {
+      setFormVisible(true);
+    }, 500);
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   const containerStyle = {
     background: 'url("https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1774&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D") no-repeat center center fixed',
     backgroundSize: 'cover',
@@ -58,6 +70,8 @@ function LoginComponent() {
     padding: '20px',
     borderRadius: '15px',
     boxShadow: '0 0 10px rgba(0, 0, 0, 0.8)',
+    opacity: isFormVisible ? 1 : 0,
+    transition: 'opacity 0.5s ease', // CSS transition for opacity
   };
 
   return (

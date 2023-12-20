@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 /* eslint-disable import/no-extraneous-dependencies */
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import './global.css';
 // import HomePageComponent from './homePage/home.page';
@@ -9,7 +10,7 @@ import { auth } from './configurations/firebase';
 import apiCalls from './loginPages/pages/serviceCalls/api.calls';
 
 function App() {
-  const [isSidePanelOpen, setSidePanelOpen] = useState(true);
+  const [isSidePanelOpen, setSidePanelOpen] = useState(false); // Change the initial state to false
   const [urlLink, setUrlLink] = useState();
   const [usersInfo, setUsersInfo] = useState([]);
   const [currentUser, setCurrentUser] = useState();
@@ -26,17 +27,12 @@ function App() {
     const user = localStorage.getItem('userId');
     if (usersInfo.length > 0) {
       setCurrentUser(usersInfo.find((x) => x.id == user));
-     }
+    }
   }, [auth, usersInfo]);
 
   useEffect(() => {
-    // Get the current pathname from the URL
     const currentPathname = window.location.pathname;
-
-    // Extract the last part of the pathname
     const lastRoute = currentPathname.split('/').filter(Boolean).pop();
-
-    // Do something with the last route
     setUrlLink(lastRoute);
   }, []);
 
@@ -44,15 +40,11 @@ function App() {
     setSidePanelOpen(!isSidePanelOpen);
   };
 
-  // const closeSidePanel = () => {
-  //   setSidePanelOpen(false);
-  // };
-
   const handleButtonClick = (url) => {
-    window.location.replace(`/${url}`);
+    window.open(`/${url}`, '_self');
   };
+
   const toggleSidePanelFromInside = () => {
-    // Toggle the side panel when the inside corner trigger is clicked
     setSidePanelOpen(!isSidePanelOpen);
   };
 
@@ -79,7 +71,7 @@ function App() {
     },
     mainContent: {
       flexGrow: 1,
-      padding: '20px',
+      padding: '0px',
       transition: 'margin-left 0.3s ease',
       marginLeft: isSidePanelOpen ? '200px' : '0',
     },
@@ -157,12 +149,7 @@ function App() {
         )}
         <li>
           <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('complainListing')}>
-            Complaint listing
-          </button>
-        </li>
-        <li>
-          <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('addComplain')}>
-            Add Complaint
+            Complain listing
           </button>
         </li>
         {currentUser.userType == 3 && (
@@ -178,23 +165,23 @@ function App() {
           </button>
         </li>
       </ul>
-  );
+    );
   }
 
   return (
     <div style={styles.app}>
       {!_.isUndefined(urlLink) && !_.isUndefined(currentUser) && urlLink != 'signup' && (
-      <>
-      <button style={styles.cornerTrigger} type="button" onClick={toggleSidePanel}>
-        {buttonLabel}
-      </button>
-      <div style={styles.sidePanel}>
-        <button style={styles.cornerTriggerInsidePanel} type="button" onClick={toggleSidePanelFromInside}>
-          {buttonLabel}
-        </button>
-        {buttonList()}
-      </div>
-      </>
+        <>
+          <button style={styles.cornerTrigger} type="button" onClick={toggleSidePanel}>
+            {buttonLabel}
+          </button>
+          <div style={styles.sidePanel}>
+            <button style={styles.cornerTriggerInsidePanel} type="button" onClick={toggleSidePanelFromInside}>
+              {buttonLabel}
+            </button>
+            {buttonList()}
+          </div>
+        </>
       )}
       <div style={styles.mainContent}>
         <MainRoutes />
