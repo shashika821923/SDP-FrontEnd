@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  Form, Input, Button, Select,
+  Form, Input, Button, Select, message,
 } from 'antd';
 import apiCalls from './pages/serviceCalls/api.calls';
 import { departments, userTypes } from '../enums';
@@ -9,6 +9,13 @@ const { Option } = Select;
 
 function CreateAccountPage() {
   const [form] = Form.useForm();
+  const [urlLink, setUrlLink] = useState();
+
+  useEffect(() => {
+    const currentPathname = window.location.pathname;
+    const lastRoute = currentPathname.split('/').filter(Boolean).pop();
+    setUrlLink(lastRoute);
+  }, []);
 
   const userTypesArray = Object.keys(userTypes).map((key) => (
     {
@@ -22,7 +29,8 @@ function CreateAccountPage() {
     }));
 
   const onFinish = async (values) => {
-    apiCalls.createAccount(values).then((userId) => window.localStorage.setItem('loggedInUser', userId));
+    apiCalls.createAccount(values).then((userId) => { message.success('Created successful!'); window.localStorage.setItem('loggedInUser', userId); })
+    .catch(() => message.error('Unsuccessful!'));
   };
 
   return (
@@ -71,6 +79,7 @@ function CreateAccountPage() {
             ))}
           </Select>
         </Form.Item>
+        {urlLink == 'addOfficers' && (
         <Form.Item label="Department" name="department" rules={[{ required: true, message: 'Please select the department' }]}>
           <Select>
             {departmentTypeArray.map((data) => (
@@ -80,6 +89,7 @@ function CreateAccountPage() {
             ))}
           </Select>
         </Form.Item>
+        )}
         <Form.Item>
           <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
             Register

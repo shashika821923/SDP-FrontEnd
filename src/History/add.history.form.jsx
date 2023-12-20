@@ -96,7 +96,7 @@ function AddHistoryForComplain({ complainId }) {
                 </Form.Item>
                 <Form.Item>
                     <Button type="primary" htmlType="submit">
-                        Add Complaint
+                        Add History
                     </Button>
                 </Form.Item>
             </Form>

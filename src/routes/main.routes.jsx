@@ -20,6 +20,7 @@ function MainRoutes() {
         <Route path="/complainListing" element={<ComplaintTable />} />
         <Route path="/dashboard" element={<DashBoardView />} />
         <Route path="/userList" element={<UsersList />} />
+        <Route path="/addOfficers" element={<CreateAccountPage />} />
       </Routes>
     </BrowserRouter>
   );

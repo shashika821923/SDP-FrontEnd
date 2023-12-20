@@ -160,7 +160,7 @@ function AddComplaint({ editMode = false, complaintId = null }) {
 
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Add Complaint
+            {editMode ? 'Edit Complain' : 'Add Complaint'}
           </Button>
         </Form.Item>
       </Form>
