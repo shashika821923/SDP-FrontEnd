@@ -15,7 +15,7 @@ const { Dragger } = Upload;
 const { Option } = Select;
 
 const backgroundStyle = {
-  backgroundImage: 'url("https://images.unsplash.com/photo-1506452305024-9d3f02d1c9b5?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D")',
+  backgroundImage: 'url("https://i.ibb.co/q9pmSSm/pexels-creative-vix-9754.jpg")',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   minHeight: '100vh',
