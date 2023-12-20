@@ -152,6 +152,11 @@ function App() {
             Complain listing
           </button>
         </li>
+        <li>
+          <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('addComplain')}>
+            Add Complains
+          </button>
+        </li>
         {currentUser.userType == 3 && (
         <li>
           <button style={styles.navigationButton} type="button" onClick={() => handleButtonClick('userList')}>
