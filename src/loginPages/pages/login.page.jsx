@@ -66,7 +66,8 @@ function LoginComponent() {
   const leftContentStyle = {
     textAlign: 'left',
     marginLeft: '30px', // Adjust the left margin as needed
-    color: 'white',
+    color: '#f2f2f2',
+
   };
 
   const rightContentStyle = {
@@ -97,8 +98,8 @@ function LoginComponent() {
   return (
     <div style={containerStyle}>
       <div style={leftContentStyle}>
-        <h1 style={{ fontSize: '76px', marginBottom: '-10px' }}>NatureGuard</h1>
-        <p style={{ fontSize: '14px' }}>Environmental Crime Reporting System (ECRS)</p>
+        <h1 style={{ fontSize: '56px', marginBottom: '-10px' }}>Environmental Crime</h1>
+        <p style={{ fontSize: '24px' }}>Reporting System (ECRS)</p>
       </div>
       <div style={rightContentStyle}>
         <Form form={form} onFinish={onFinish} layout="vertical" style={formStyle}>
